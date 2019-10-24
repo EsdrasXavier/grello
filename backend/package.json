@@ -1,0 +1,16 @@
+{
+  "name": "grello-api",
+  "version": "1.0.0",
+  "description": "Api for the Grello system",
+  "main": "app.js",
+  "devDependencies": {},
+  "scripts": {
+    "start": "node app.js",
+    "test": "npm test"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "mysql": "^2.17.1"
+  }
+}
