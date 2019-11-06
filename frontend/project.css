@@ -1,0 +1,28 @@
+:var {
+    --primary-color: #0077F7;
+}
+
+::placeholder {
+    color: #024C9E;
+}
+
+input.board-title {
+    border: 0px;
+    background-color: var(--primary-color);
+    margin-left: auto;
+    margin-right: auto;
+    font-size-adjust: inherit;
+    font-size: x-large;
+    max-width: 200px;
+}
+
+button.board-dropdown {
+    border: 0px;
+    background-color: var(--primary-color);
+}
+
+div.card-margin {
+    max-width: 18rem;
+    margin-top: 20px;
+    margin-left: 20px
+}
