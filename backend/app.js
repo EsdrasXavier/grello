@@ -1,10 +1,14 @@
 const express = require('express'),
+bodyParser = require('body-parser');
+
 app = express(),
 port = process.env.PORT || 3000;
 
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 console.log('todo list RESTful API server started on: ' + port);
 
-var routes = require('./api/routes/profile');
-routes(app);
+var profileRoute = require('./api/routes/profile');
+profileRoute(app);
 app.listen(port);

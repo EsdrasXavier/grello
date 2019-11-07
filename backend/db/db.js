@@ -1,13 +1,18 @@
 var mysql = require('mysql');//Inclui a biblioteca instalada do Mysql
-var connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: 'root',
-  database: ''
-});
 
-connection.connect();
-connection.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
-  if (error) throw error;
-  console.log('The solution is: ', results[0].solution);
-});
+module.exports = (sqlQuery, res) => {
+  var connection = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: 'root',
+    database: 'grello'
+  });
+
+  connection.connect();
+  connection.query(sqlQuery, (error, results, fields) => {
+    if (error) res.json(error);
+    else res.json(results)
+  
+    connection.end();
+  });
+}   
