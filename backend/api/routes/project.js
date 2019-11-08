@@ -3,9 +3,9 @@
 module.exports = (app) => {
   var project = require('../controllers/project');
 
-  app.route('/create')
+  app.route('/project/create')
     .post(project.create);
 
-  app.route('/projects')
-    .post(project.getProjects);
+  app.route('/projects/:email')
+    .get(project.getProjects);
 }

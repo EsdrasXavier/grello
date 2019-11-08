@@ -10,5 +10,8 @@ app.use(bodyParser.json());
 console.log('todo list RESTful API server started on: ' + port);
 
 var profileRoute = require('./api/routes/profile');
+var projectRoute = require('./api/routes/project');
 profileRoute(app);
+projectRoute(app);
+
 app.listen(port);
