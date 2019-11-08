@@ -4,21 +4,25 @@ import { Link } from 'react-router-dom'
 import { openNotificationWithIcon } from '../helpers/notify';
 import Config from '../config';
 import axios from 'axios';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { setProfile } from '../actions/index';  
+
 
 class Login extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       email: '',
       password: ''
     }
   }
-
+  
   handleSubmit = e => {
     e.preventDefault();
     const { email, password } = this.state;
-
+    
     axios.post(`${Config.URL}/login`, {
       email: email,
       password: password
@@ -27,6 +31,7 @@ class Login extends React.Component {
       if (data.error || data.sqlMessage || data.length <= 0) {
         openNotificationWithIcon('error', 'Erro', `Houve um erro ao realizar cadastro. Erro: ${data.error || data.sqlMessage || ''}`);  
       } else {
+        this.props.setProfile({profile: email})
         this.props.history.push('/dashboard');
       }
     }).catch(() => {
@@ -72,5 +77,11 @@ class Login extends React.Component {
     );
   }
 }
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({ setProfile }, dispatch);
 
-export default Login;
+const mapStateToProps = store => ({
+  profile: store.profileState.profile
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
