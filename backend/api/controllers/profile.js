@@ -15,10 +15,15 @@ exports.login = (req, res) => {
 
 exports.createAccount = (req, res) => {
   const params = req.body;
-  const { email, name, password } = params;
+  const { email, username, password } = params;
+
+  if (!email || !username || !password) {
+    res.json({error: 'Dados inválidos.'})
+    return ;
+  }
   
   const sql = `INSERT INTO user(email, name, password)
-                VALUES('${email}', '${name}', MD5('${password}'))`;
+                VALUES('${email}', '${username}', MD5('${password}'))`;
   
   execSQLQuery(sql, res);
 }
