@@ -4,6 +4,7 @@ import './index.css';
 import Login from './components/Login';
 import Register from './components/Register';
 import Dashboard from './components/Dashboard';
+import Project from './components/Project';
 import * as serviceWorker from './serviceWorker';
 import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
 import { BrowserRouter, Router, Route } from 'react-router-dom';
@@ -19,6 +20,7 @@ ReactDOM.render(
       <Route path="/" exact={true} component={Login} />
       <Route path="/register" component={Register} />
       <Route path="/dashboard" component={Dashboard} />
+      <Route path="/project" component={Project} />
     </Router>
   </ BrowserRouter>
   </Provider>

@@ -4,6 +4,8 @@ import axios from 'axios';
 import Config from '../config';
 import { connect } from 'react-redux';
 import { openNotificationWithIcon } from '../helpers/notify';
+import { bindActionCreators } from 'redux';
+import { setProject } from '../actions/index';
 
 import './Dashboard.css';
 
@@ -27,9 +29,9 @@ class Dashboard extends React.Component {
   }
 
   getCardsData = () => {
-    let email = 'test@test.com';
+    let email = 'e@e.com';
     if (this.props.profile) {
-      email = this.props.profile.profile || 'test@test.com'
+      email = this.props.profile.profile || email
     }
 
     axios.get(`${Config.URL}/projects/${email}`, config, { email: email }).then(res => {
@@ -64,9 +66,9 @@ class Dashboard extends React.Component {
 
   onKeyDown = event => {
     if (event.keyCode === 13) {
-      let email = 'test@test.com';
+      let email = 'e@e.com';
       if (this.props.profile) {
-        email = this.props.profile.profile || 'test@test.com'
+        email = this.props.profile.profile || email
       }
 
       axios.post(`${Config.URL}/project/create`, {
@@ -91,6 +93,8 @@ class Dashboard extends React.Component {
       const id = event.target.children[0].id;
       if (id !== 'null' && id !== null) {
         console.log(id)
+        this.props.setProject({project: id});
+        this.props.history.push('/project');
       }
     }
   }
@@ -127,8 +131,12 @@ class Dashboard extends React.Component {
   }
 }
 
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({ setProject }, dispatch);
+
 const mapStateToProps = store => ({
-  profile: store.profileState.profile
+  profile: store.profileState.profile,
+  project: store.projectState.project
 });
 
-export default connect(mapStateToProps)(Dashboard);
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
