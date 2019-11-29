@@ -8,27 +8,42 @@
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="./styles/default.css">
 </head>
 
 <body>
-    <div class="container" style="max-width: 450px;padding-top: 10%">
-        <form>
-            <div class="form-group">
+    <header>
+        <div class="navbar navbar-dark bg-primary box-shadow">
+            <div class="container d-flex justify-content-between">
+                <a href="#" class="navbar-brand d-flex align-items-center">
+                    <img src="./resources/logo.png" style="width: 150px" />
+                </a>
+            </div>
+        </div>
+    </header>
+    <div class="container" style="padding-top: 3%">
+        <h1 class="text-center">Logar</h1>
+        <br>
+        <div id="dvCadastro" class="col offset-sm-3 col-sm-6">
+            <div class="form-group input-group-sm">
                 <label for="email">E-mail</label>
-                <input type="email" class="form-control" id="email" aria-describedby="emailHelp"
-                    placeholder="Escreva seu e-mail">
+                <input type="email" class="form-control" id="email" aria-describedby="emailHelp">
+            </div>
+            <div class="form-group input-group-sm">
+                <label for="password">Senha</label>
+                <input type="password" class="form-control" id="password">
             </div>
             <div class="form-group">
-                <label for="password">Senha</label>
-                <input type="password" class="form-control" id="password" placeholder="Senha">
+                <a class="btn btn-warning" href="./cadastro.html">Cadastre-se</a>
+                <button id="enter" class="btn btn-primary float-right">Entrar</button>
             </div>
-            <div class="form-group form-check">
-                <input type="checkbox" class="form-check-input" id="check">
-                <label class="form-check-label" for="check">Continuar Logado</label>
-            </div>
-            <button type="submit" class="btn btn-primary">Entrar</button>
-            <button class="btn btn-primary float-right" onclick="window.ref">Cadastre-se</button>
-        </form>
+        </div>
+    </div>
+
+    <br>
+
+    <div class="footer card-footer text-muted">
+        <span style="padding-left: 5%">&copy; 2019 Grello, Inc.</span>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -40,6 +55,8 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
+    <script src="scripts/index.js"></script>
+    
 </body>
 
 </html>
