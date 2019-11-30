@@ -50,7 +50,6 @@ input.custom-card-input {
     box-shadow: 0px 0px 12px -4px #000;
 }
 
-
 .card-description {
     font-size: 14px !important;
     color: #aaa;
@@ -64,4 +63,20 @@ input.custom-card-input {
 
 .card-header {
     cursor: move;
+}
+
+#addBtnDiv {
+    margin-top: 2%;
+    margin-left: 2%;
+}
+
+#projectInfo a {
+    font-size: 200%;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding-left: 2%;
+    font-weight: lighter;
+}
+
+#projectInfo a.projectAuthor {
+    font-size: 100%;
 }
