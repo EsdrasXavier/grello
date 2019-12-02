@@ -1,3 +1,3 @@
 # Grello
 
-This project was based on Trello.
+O website é um sistema de login e um sistema de criação e manutenção de projetos no formato de to-do lists, sendo estas listas a representação de um projeto ou simplesmente tarefas integradas entre um ou mais usuários do sistema. Um projeto é formado pelo seu título e suas várias listas de tarefas, cada projeto terá um autor, o projeto terá um sistema de permissões entre os usuários que acessarão o projeto de forma com que o autor permite os colaboradores editar algumas tarefas, todas as tarefas ou nenhuma. Cada lista de tarefa terá suas tarefas, dependendo das permissões, cada usuário poderá criar editar e excluir as tarefas.
