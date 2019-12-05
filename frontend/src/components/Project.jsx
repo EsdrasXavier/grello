@@ -1,16 +1,170 @@
 
-import { DndProvider } from 'react-dnd'
-import HTML5Backend from 'react-dnd-html5-backend'
-import { Col, Row } from 'antd';
-import update from 'immutability-helper'
-import Card from './Card';
 import axios from 'axios';
-import React, { useState } from 'react';
-import { useDrop } from 'react-dnd';
+import React from 'react';
 import { connect } from 'react-redux';
+import Board from "react-trello";
 import Config from '../config';
 import './Dashboard.css';
-import ItemTypes from './ItemTypes';
+
+const removeDups = (names) => {
+  let unique = {};
+  names.forEach(function(i) {
+    if(!unique[i]) {
+      unique[i] = true;
+    }
+  });
+  return Object.keys(unique);
+}
+
+const data = {
+  "lanes": [
+    {
+      "id": "PLANNED",
+      "title": "Planned Tasks",
+      "label": "20/70",
+      "style": {
+        "width": 280
+      },
+      "cards": [
+        {
+          "id": "Milk",
+          "title": "Buy milk",
+          "label": "15 mins",
+          "description": "2 Gallons of milk at the Deli store"
+        },
+        {
+          "id": "Plan2",
+          "title": "Dispose Garbage",
+          "label": "10 mins",
+          "description": "Sort out recyclable and waste as needed"
+        },
+        {
+          "id": "Plan3",
+          "title": "Write Blog",
+          "label": "30 mins",
+          "description": "Can AI make memes?"
+        },
+        {
+          "id": "Plan4",
+          "title": "Pay Rent",
+          "label": "5 mins",
+          "description": "Transfer to bank account"
+        }
+      ]
+    },
+    {
+      "id": "WIP",
+      "title": "Work In Progress",
+      "label": "10/20",
+      "style": {
+        "width": 280
+      },
+      "cards": [
+        {
+          "id": "Wip1",
+          "title": "Clean House",
+          "label": "30 mins",
+          "description": "Soap wash and polish floor. Polish windows and doors. Scrap all broken glasses"
+        }
+      ]
+    },
+    {
+      "id": "BLOCKED",
+      "title": "Blocked",
+      "label": "0/0",
+      "style": {
+        "width": 280
+      },
+      "cards": []
+    },
+    {
+      "id": "COMPLETED",
+      "title": "Completed",
+      "style": {
+        "width": 280
+      },
+      "label": "2/5",
+      "cards": [
+        {
+          "id": "Completed1",
+          "title": "Practice Meditation",
+          "label": "15 mins",
+          "description": "Use Headspace app"
+        },
+        {
+          "id": "Completed2",
+          "title": "Maintain Daily Journal",
+          "label": "15 mins",
+          "description": "Use Spreadsheet for now"
+        }
+      ]
+    },
+    {
+      "id": "REPEAT",
+      "title": "Repeat",
+      "style": {
+        "width": 280
+      },
+      "label": "1/1",
+      "cards": [
+        {
+          "id": "Repeat1",
+          "title": "Morning Jog",
+          "label": "30 mins",
+          "description": "Track using fitbit"
+        }
+      ]
+    },
+    {
+      "id": "ARCHIVED",
+      "title": "Archived",
+      "style": {
+        "width": 280
+      },
+      "label": "1/1",
+      "cards": [
+        {
+          "id": "Archived1",
+          "title": "Go Trekking",
+          "label": "300 mins",
+          "description": "Completed 10km on cycle"
+        }
+      ]
+    },
+    {
+      "id": "ARCHIVED2",
+      "title": "Archived2",
+      "style": {
+        "width": 280
+      },
+      "label": "1/1",
+      "cards": [
+        {
+          "id": "Archived2",
+          "title": "Go Jogging",
+          "label": "300 mins",
+          "description": "Completed 10km on cycle"
+        }
+      ]
+    },
+    {
+      "id": "ARCHIVED3",
+      "title": "Archived3",
+      "style": {
+        "width": 280
+      },
+      "label": "1/1",
+      "cards": [
+        {
+          "id": "Archived3",
+          "title": "Go Cycling",
+          "label": "300 mins",
+          "description": "Completed 10km on cycle"
+        }
+      ]
+    }
+  ]
+}
 
 
 const config = {
@@ -24,12 +178,13 @@ class Project extends React.Component {
     super(props);
 
     this.state = {
-      boards: []
+      data: {"lanes": []}
     }
 
     console.log(this.props);
   }
 
+  // TODO: Make it acctually works rs
   componentDidMount = () => {
     this.getBoardData();
   }
@@ -37,43 +192,121 @@ class Project extends React.Component {
   getBoardData = () => {
     let projectId = '2';
 
-    axios.get(`${Config.URL}/board/${projectId}`, config).then(res => {
+    let email = 'e@e.com';
+    if (this.props.profile) {
+      email = this.props.profile.profile || email
+    }
+
+    axios.get(`${Config.URL}/projects/${email}`, config, { email: email }).then(res => {
+      console.log(res)
       if (res.data) {
         let data = res.data;
-        console.log(res.data)
-        data.push({ title: 'Insira o nome', id: null });
-        this.setState({ boards: data });
+        const lanes = data.filter(i => (i.card_title && i.lane_title) || (i.card_title === null && i.lane_title && i.lane_title.length > 0))
+        .map(i => {
+          return {
+            id: i.lane_id,
+              title: i.lane_title,
+              label: i.lane_title,
+              cards: []
+          }
+        });
+
+        const cards = data.filter(i => i.card_title && i.card_title.length > 0)
+        .map(i => {
+          return {
+            id: i.card_title,
+            title: i.card_title,
+            label: i.card_label,
+            description: i.card_description,
+            laneId: i.card_lane_id
+          }
+        });
+
+        lanes.forEach(lane => {
+          const data = cards.filter(card => {
+            console.log(' i >> ', card, lane)
+            
+            return card.laneId === lane.id;
+          }).map(i => {
+            return {
+              id: i.id,
+              title: i.title,
+              label: i.label,
+              description: i.description,
+              laneId: i.laneId
+            }});
+
+          console.log('Card >> ', data)  
+          if (data && data.length > 0) lane.cards.push(data)
+        })
+
+        console.log(lanes);
+        console.log(cards)
+        this.setState({ data: {"lanes": lanes} });
       }
     }).catch(err => {
       console.log(err)
     })
   }
-  moveCard = (id, atIndex) => {
-    // const { card, index } = this.findCard(id)
-    // this.setState(card)
 
+  onCardAdd = (card, laneId) => {
+    const id = card.id || '???';
+    const title = card.title || '';
+    const description = card.description || '';
+    const label = card.label || '';
+    const lane_id = laneId;
+
+    axios.post(`${Config.URL}/project/createCard`, {
+      id, title,
+      description,
+      label, lane_id
+    }).then(res => {
+      console.log(res)
+    }).catch(err => {
+      console.log(err)
+    })
+
+    console.log(card, laneId)
   }
 
-  findCard = id => {
-    // const card = cards.filter(c => `${c.id}` === id)[0]
-    // return {
-    //   card,
-    //   index: cards.indexOf(card),
-    // }
+  onLaneAdd = (data) => {
+    console.log(data)
+
+    let email = 'e@e.com';
+    if (this.props.profile) {
+      email = this.props.profile.profile || email
+    }
+
+    axios.post(`${Config.URL}/project/createLane`, 
+      { email: email, title: data.title }).then(res => {
+      console.log(res)
+      if (res.data) {
+        let data = res.data;
+        
+      }
+    }).catch(err => {
+      console.log(err)
+    })
+  }
+
+  deleteCard = (cardId, laneId) => {
+    console.log(cardId, laneId)
   }
 
   render() {
-
+    const data = {...this.state.data};
+    console.log(data)
     return (
-      <div style={{ background: '#ECECEC', padding: '30px', width: '100%' }}>
-        <Row gutter={16}>
-          <Col span={6} style={{ width: '100%', display: 'flex' }}>
-            <DndProvider backend={HTML5Backend}>
-
-              <Boards />
-            </DndProvider>
-          </Col>
-        </Row>
+      <div style={{ background: '#ECECEC', width: '100%' }}>
+            <Board 
+              data={data} 
+              draggable 
+              editable={true} 
+              canAddLanes={true}
+              onLaneDelete={this.deleteCard}
+              onLaneAdd={this.onLaneAdd}
+              onCardAdd={this.onCardAdd}
+            />  
       </div>
     );
   }
@@ -85,73 +318,3 @@ const mapStateToProps = store => ({
 });
 
 export default connect(mapStateToProps)(Project);
-
-const style = {
-  width: 400,
-}
-const ITEMS = [
-  {
-    id: 1,
-    text: 'Write a cool JS library',
-  },
-  {
-    id: 2,
-    text: 'Make it generic enough',
-  },
-  {
-    id: 3,
-    text: 'Write README',
-  },
-  {
-    id: 4,
-    text: 'Create some examples',
-  },
-  {
-    id: 5,
-    text: 'Spam in Twitter and IRC to promote it',
-  },
-  {
-    id: 6,
-    text: '???',
-  },
-  {
-    id: 7,
-    text: 'PROFIT',
-  },
-]
-
-
-const Boards = (props) => {
-
-  const [cards, setCards] = useState(ITEMS)
-  const moveCard = (id, atIndex) => {
-    const { card, index } = findCard(id)
-    setCards(
-      update(cards, {
-        $splice: [[index, 1], [atIndex, 0, card]],
-      }),
-    )
-  }
-  const findCard = id => {
-    const card = cards.filter(c => `${c.id}` === id)[0]
-    return {
-      card,
-      index: cards.indexOf(card),
-    }
-  }
-  const [, drop] = useDrop({ accept: ItemTypes.CARD })
-  return (
-    <>
-      <div ref={drop} style={style}>
-        {cards.map(card => (
-          <Card
-            key={card.id}
-            id={`${card.id}`}
-            text={card.text}
-            moveCard={moveCard}
-            findCard={findCard}
-          />
-        ))}
-      </div></>
-  )
-}

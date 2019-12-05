@@ -4,8 +4,8 @@ module.exports = (sqlQuery, res) => {
   var connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: 'qweasd',
-    database: 'grello'
+    password: 'root',
+    database: 'new_grello'
   });
 
   connection.connect();

@@ -32,7 +32,7 @@ class Login extends React.Component {
         openNotificationWithIcon('error', 'Erro', `Houve um erro ao realizar cadastro. Erro: ${data.error || data.sqlMessage || ''}`);  
       } else {
         this.props.setProfile({profile: email});
-        this.props.history.push('/dashboard');
+        this.props.history.push('/project');
       }
     }).catch(() => {
       openNotificationWithIcon('error', 'Erro', 'Houve um erro ao realizar cadastro. Por favor tente novamente mais tarde.');

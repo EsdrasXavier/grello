@@ -31,7 +31,7 @@ class Register extends React.Component {
           openNotificationWithIcon('error', 'Erro', `Houve um erro ao realizar cadastro. Erro: ${data.error || data.sqlMessage}`);  
         } else {
           openNotificationWithIcon('success', 'Cadastrado!', `Usuário cadastrado com sucesso.`);  
-          this.props.history.push('/dashboard');
+          this.props.history.push('/project');
         }
       }).catch(() => {
         openNotificationWithIcon('error', 'Erro', 'Houve um erro ao realizar cadastro. Por favor tente novamente mais tarde.');
