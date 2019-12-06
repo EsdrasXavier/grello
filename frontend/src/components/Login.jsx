@@ -49,9 +49,12 @@ class Login extends React.Component {
 
   render() {
     return (
-      <Row gutter={[16, 16]} type="flex" justify="center">
+      <Row gutter={[16, 16]} type="flex" justify="center" style={{ marginTop: '150px' }}>
         <Col span={6} >
-          <Form onSubmit={this.handleSubmit} className="login-form">
+          <h1 style={{ textAlign: 'center', fontWeight: 'bold' }}>
+              Grello
+          </h1>
+          <Form onSubmit={this.handleSubmit} className="login-form" style={{ marginTop: '15px' }}>
             <Form.Item>
               <Input onChange={this.setEmail}
                 prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
@@ -69,7 +72,7 @@ class Login extends React.Component {
               <Button type="primary" htmlType="submit" className="login-form-button">
                 Log in
               </Button>
-              ou <Link to="/register">Cadastre-se</Link>
+              &nbsp; ou &nbsp; <Link to="/register"> Cadastre-se</Link>
             </Form.Item>
           </Form>
         </Col>

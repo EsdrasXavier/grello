@@ -62,9 +62,12 @@ class Register extends React.Component {
 
   render() {
     return (
-      <Row gutter={[16, 16]} type="flex" justify="center">
+      <Row gutter={[16, 16]} type="flex" justify="center" style={{ marginTop: '150px' }}>
         <Col span={6} >
-          <Form onSubmit={this.handleSubmit} className="login-form">
+          <h1 style={{ textAlign: 'center', fontWeight: 'bold' }}>
+              Grello
+          </h1>
+          <Form onSubmit={this.handleSubmit} className="login-form" style={{ marginTop: '15px' }}>
             <Form.Item>
               <Input onChange={this.setEmail}
                 prefix={<Icon type="user" id="email" style={{ color: 'rgba(0,0,0,.25)' }} />}
